@@ -68,24 +68,27 @@ module mGeoidUn
     end interface
     contains
 
-            subroutine init_const1(N_init)
+        subroutine init_const1(N_init)
             ! IMPLICIT REAL*8 (A-H,O-Z)
-                integer*8 N_init
+                integer*4 N_init
                 MAXN = N_init
                 NLit = MAXN+1
                 NDIM = ((MAXN+1)*(MAXN+2))/2
-            end subroutine init_const1
+        end subroutine init_const1
 
-   subroutine f477(dElapseT, VecFLAT, VecFLON , VecU, Norder)
+    subroutine f477(dElapsedT, VecFLAT, VecFLON , VecU, vecLen, Norder)
       ! use mGeoidUn
+      use iso_c_binding
       IMPLICIT REAL*8 (A-H,O-Z)
 
+      integer(c_int) :: vecLen
       real*8, allocatable :: P(:), SCRAP(:), RLEG(:), DLEG(:),RLNN(:), &
       SINML(:),COSML(:), HC(:),HS(:),CC(:),CS(:)
-      real*8 :: VecFLAT(:), VecFLON(:), VecU(:)
-      integer*8, optional :: Norder
+      real(c_double), intent(inout) :: VecFLAT(vecLen), VecFLON(vecLen), VecU(vecLen)
+      integer(c_int) :: Norder
+      real(c_double), intent(out) :: dElapsedT
 
-      real :: start, finish, dElapsedT
+      real :: start, finish
       DATA RAD/57.29577951308232D0/, HT/0.0D0/
 
       ! call init_const1(Norder)
@@ -192,10 +195,17 @@ module mGeoidUn
     ! 结束计时，统计程序运行时间
     call cpu_time(finish)
 
-    print '("运行时间统计 = ",f6.3," seconds.")',finish-start
+    dElapsedT = finish - start
+
+    print '("运行时间统计 = ",f6.3," seconds.")', dElapsedT
 
     deallocate(P, SCRAP, RLEG, DLEG,RLNN, &
       SINML,COSML, HC,HS,CC,CS)
+
+      close(14)
+      close(1)
+            close(12)
+      close(20)
 
   ! 主程序结束
  90   return
