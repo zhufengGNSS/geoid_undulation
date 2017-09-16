@@ -1,3 +1,8 @@
 # depslib dependency file v1.0
 1178505004 source:f:\vs2010cmd\geoid_undulation\intp_xp\intpt.f
 
+1505556748 source:f:\vs2010cmd\geoid_undulation\intp_xp\intpt.f95
+
+1505556796 source:f:\vs2010cmd\geoid_undulation\intp_xp\test2main.cpp
+	<iostream>
+

@@ -1,35 +1,38 @@
+
+
+
       PROGRAM INTPT
 CCCCCCCCC+CCCCCCCCC+CCCCCCCCC+CCCCCCCCC+CCCCCCCCC+CCCCCCCCC+CCCCCCCCC+C-CCCCCCC+
 C
 C GRID FILE STRUCTURE:
 C
-C  This FORTRAN program will interpolate values from a WORLD-WIDE grid file.  
+C  This FORTRAN program will interpolate values from a WORLD-WIDE grid file.
 C  The grid file must have a header as record 1 with the following format:
 C
 C       south    north    west    east    spacing N-S   spacing W-E
 C
-C  The grid data are in subsequent records arranged from North to South, West 
+C  The grid data are in subsequent records arranged from North to South, West
 C  to East, i.e. record 2 would be the northern most latitude band of data.
-C                                                                         
+C
 C-------------------------------------------------------------------------------
 C
 C  Several interpolation schemes are possible using this program.  By setting
 C  the parameter IWINDO to a particular value, one may use Bi-linear interpo-
 C  lation or a spline interpolation with a window of size of IWINDO  x IWINDO.
-C  Check the subroutine "INTERP" for more information.                    
-C                                                                      
-C  This program is set up to extend the longitude values by a minimum of 2 posts 
-C  on the positive side of the east longitude limit and a minimum of 2 posts to 
-C  the negative side of the west longitude.          
+C  Check the subroutine "INTERP" for more information.
+C
+C  This program is set up to extend the longitude values by a minimum of 2 posts
+C  on the positive side of the east longitude limit and a minimum of 2 posts to
+C  the negative side of the west longitude.
 C
 C-------------------------------------------------------------------------------
 C
 C  Change the following variables in the parameter statements below to match
 C  the grid file information and desired interpolation method:
 C
-C                IWINDO = Size of window of interpolation and method. 
-C                             IWINDO=0 gives bilinear interpolation. 
-C                             Check subroutine "INTERP" below for more 
+C                IWINDO = Size of window of interpolation and method.
+C                             IWINDO=0 gives bilinear interpolation.
+C                             Check subroutine "INTERP" below for more
 C                             information.
 C
 C                ****NOTE: If IWINDO=0 be sure to set NBDR=4 *****
@@ -37,9 +40,9 @@ C                             In general, NBDR=2*IWINDO
 C
 C
 C                NLAT = Number of values in latitude.
-C                NLON = Number of values in longitude. (Leave the NBDR 
+C                NLON = Number of values in longitude. (Leave the NBDR
 C                            parameter in the NLON parameter declaration.
-C                            This controls the extension of the grid in 
+C                            This controls the extension of the grid in
 C                            longitude.)
 C                DLAT = Spacing in latitude.
 C                DLON = Spacing in longitude.
@@ -57,7 +60,7 @@ C  INPUT DATA POINTS:  UNIT = 11
 C
 C     The input file of points to be interpolated is arranged as:
 C
-C                       latitude   longitude 
+C                       latitude   longitude
 C                         (decimal degrees)
 C
 C
@@ -72,7 +75,7 @@ C-------------------------------------------------------------------------------
 C
 C  This program was provided by Professor Richard H. Rapp of The Ohio State
 C    University, December, 1996.  It was put into its present form by the National
-C    Imagery and Mapping Agency (NIMA), December, 1996.  
+C    Imagery and Mapping Agency (NIMA), December, 1996.
 C
 CCCCCCCCC+CCCCCCCCC+CCCCCCCCC+CCCCCCCCC+CCCCCCCCC+CCCCCCCCC+CCCCCCCCC+C-CCCCCCC+
 
@@ -256,6 +259,8 @@ c        IF(NPOINT.LE.ILIST) WRITE(6,7009) PHI,DLA
       ENDIF
       RETURN
       END
+
+
       FUNCTION BILIN(RI,RJ,A,IMAX,JMAX,IADIM,JADIM)
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C                                                                      C
@@ -318,6 +323,8 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
      .RN*RE*A(IN+1,IE+1)
       RETURN
       END
+
+
       SUBROUTINE INITSP(Y, N, R, Q)
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C                                                                      C
@@ -358,6 +365,8 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
    12 CONTINUE
       RETURN
       END
+
+
       FUNCTION SPLINE(X, Y, N, R)
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C                                                                      C
@@ -401,6 +410,8 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       ENDIF
       RETURN
       END
+
+
       FUNCTION IFRAC(R)
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C                                                                      C
@@ -425,6 +436,8 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       IFRAC = IFRAC - 1
       RETURN
       END
+
+
       SUBROUTINE HISTO(IUN6,IENT,NAM,XMIN,XMAX,RDX,J,X,NEWP)
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C                                                                      C
@@ -575,3 +588,6 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
  7005 FORMAT(/' END OF SUBROUTINE HISTO')
  7006 FORMAT(1H1)
       END
+
+
+
