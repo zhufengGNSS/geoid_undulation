@@ -53,20 +53,8 @@ module mGeoidUn
     save :: MAXN, NLit, NDIM
     public :: MAXN, NLit, NDIM
     public init_const1
-    interface
-!        subroutine init_const1(N_init)
-!            IMPLICIT REAL*8 (A-H,O-Z)
-!        end subroutine init_const1
-
-!    subroutine f477(dElapseT, Norder)
-!        IMPLICIT REAL*8 (A-H,O-Z)
-!        real :: dElapseT
-!        integer*8 :: Norder
-!    end subroutine f477
-!    end subroutine
-
-    end interface
     contains
+
 
         subroutine init_const1(N_init)
             ! IMPLICIT REAL*8 (A-H,O-Z)
@@ -204,7 +192,7 @@ module mGeoidUn
 
       close(14)
       close(1)
-            close(12)
+      close(12)
       close(20)
 
   ! 主程序结束
@@ -459,6 +447,36 @@ module mGeoidUn
 
       RETURN
       END
+
+        subroutine testF477(dElapsedT, VecFLAT, VecFLON , VecU, vecLen, Norder, resVec360, resVecIntpt)
+
+        		use intptFunc, only: INTPT
+        		use iso_c_binding
+        		implicit none
+
+      			real(c_double), intent(inout) :: VecFLAT(vecLen), &
+      			VecFLON(vecLen), VecU(vecLen), resVec360(vecLen), resVecIntpt(vecLen)
+      			integer(c_int) :: Norder, VecLen
+      			real(c_double), intent(out) :: dElapsedT
+      			integer*4 :: N360 = 300
+
+      			real*8 ::    dElapsedT1,  VecU360(vecLen), VecUintpt(vecLen)
+            !!! 使用f477的360阶计算
+            call init_const1(N360)
+
+            call F477(dElapsedT1, VecFLAT, VecFLON , VecU360, vecLen, 360)
+
+            call init_const1(Norder)
+
+            call F477(dElapsedT1, VecFLAT, VecFLON , VecU, vecLen, Norder)
+
+            call INTPT( VecFLAT, VecFLON , VecUintpt, vecLen)
+
+            resVec360 =  VecU360 -  VecU
+            resVecIntpt =  VecUintpt -  VecU
+
+			return
+        end subroutine
 
 end module mGeoidUn
 

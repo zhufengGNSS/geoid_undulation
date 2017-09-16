@@ -87,7 +87,7 @@
       implicit real*8(a-h,o-z)
       real*8 south,north,west,east,dphi,dlam
       integer(c_int) :: len1
-      real(c_double),  intent(in) :: VecFLAT(len1), VecFLON(len1)
+      real(c_double),  intent(inout) :: VecFLAT(len1), VecFLON(len1)
       real(c_double),  intent(out) :: VecU(len1)
 
 
@@ -144,6 +144,10 @@
          ENDDO
       ENDDO
 
+    WHERE (VecFLON(:) < 0)
+        VecFLON(:) = VecFLON(:) + 360.0
+    ENDWHERE
+
 !!! read in the points to be interpolated
  onePoint :   do Nindex = 1, size(VecFLAT, 1)
         FLAT = VecFLAT(Nindex)
@@ -167,6 +171,10 @@
 100   CONTINUE
 
 !!!      CALL HISTO(6,3,NAM,XMIN,XMAX,RDX,1,0.D0,1)
+
+      close(20)
+      close(1)
+      close(11)
 
 !!!  end of the main program
       return
